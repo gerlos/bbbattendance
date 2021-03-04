@@ -1,5 +1,34 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""bbbattendance.py [-h] [-r ROOM] [-u USER] [-l LOGFILE] [-o OUTFILE.CSV] [date]
+
+This module parses BigBlueButton logs for a specific date, looking for meeting
+start and stop events and user join and left events. Can filter events based on
+room name and user name. Can be run on its own or included in other projects.
+
+It can be used to extract user attendance to meetings, for example for students
+attending online classes.
+
+By default it outputs all events occurred in the current day from default log
+file, `/var/log/bigbluebutton/bbb-web.log`. Since log files are often rotated,
+you may need to specify a different file to read.
+
+Date are formatted in ISO 8601 format (i.e. YYYY-MM-DD, like in 2020-12-31).
+Room and user names with spaces should be in quotes.
+
+Results are put in a CSV file. If no file name is specified by the user, data is
+written to a file beginning with `bbb-report` (for example:
+`bbb-report-2020-12-31-roomname-username.csv`).
+Columns output:
+Date,Time,Room,User,Event
+
+Events may be "meeting start", "meeting end", "user join" and "user left".
+When meetings end before an user left, no "user left" event is reported.
+
+Note: This program depends on Python 3. If running Python < 3.7 you also need
+the `iso8601` module. To install it, use `pip3 install iso8601` or
+`apt install python3-iso8601` (on Debian and Ubuntu).
+"""
 
 import argparse
 import csv

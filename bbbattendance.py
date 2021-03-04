@@ -16,7 +16,7 @@ __version__ = 1.3
 
 ###################################################################
 # DEFAULT CONFIGURATION
-# This configuration will be overridden by command line arguments
+# This configuration can be overridden by command line arguments
 ###################################################################
 def_logfile = "/var/log/bigbluebutton/bbb-web.log"
 def_output_basename = "bbb-report"
@@ -180,7 +180,7 @@ if __name__ == '__main__':
         sys.exit(1)
     elif py_version[1] < 7:
         # Python < 3.7 doesn't provide datetime.datetime.fromisoformat(),
-        # this is why we need the iso8601 module
+        # in this case we need the iso8601 module
         try:
             import iso8601
         except:
@@ -188,13 +188,13 @@ if __name__ == '__main__':
             print("Please install it with `pip3 install iso8601` or `apt install python3-iso8601`")
             sys.exit(1)
 
-    # Get user input, or use defaults if missing
+    # Get user input, or use defaults
     req_date, req_room, req_user, logfile, outfile = get_user_input(
                                     def_date, def_room, def_user,
                                     def_logfile, def_output_basename)
 
-    # Read events from logfile. Warn the user if logfile couldn't be found, or
-    # if there were no events to parse and then exit
+    # Read events from logfile. Warn the user if logfile can't be found, or
+    # if there are no events to parse and then exit
     try:
         raw_attendance = read_data(logfile)
     except FileNotFoundError:

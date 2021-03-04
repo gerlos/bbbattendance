@@ -136,6 +136,25 @@ def parse_data(raw_attendance):
     # return a list of dicts including date, time, room, user (if applicable) and event
     return parsed_attendance
 
+def filter_data(parsed_attendance, req_date='', req_room='', req_user=''):
+    """filter_data: Filter data in parsed_attendance, pulling out events related
+    to req_date, req_room and req_user, if specified by the user.
+    Return a list of dicts like parsed_attendance.
+    """
+    filtered_attendance = []
+    for line in parsed_attendance:
+        if req_date == '' or req_date == line['Date']:
+            if req_room == '' or req_room == line['Room']:
+                if line['Event'] == "Meeting has started." or line['Event'] == "Meeting has ended.":
+                    filtered_attendance.append(line)
+                elif line['Event'] == "User joined the meeting." or line['Event'] == "User left the meeting.":
+                    if req_user == "" or req_user == line['User']:
+                        filtered_attendance.append(line)
+
+    # return a list of dicts including date, time, room, user (if applicable) and event
+    return filtered_attendance
+
+
 
 ###################################################################
 # MAIN
@@ -175,3 +194,9 @@ if __name__ == '__main__':
 
     # Parse lines from log file, and convert them in a list of dicts with the data
     parsed_attendance = parse_data(raw_attendance)
+
+    # filter events based on req_date, req_room, and/or req_user
+    filtered_attendance = filter_data(parsed_attendance, req_date, req_room, req_user)
+    if len(filtered_attendance) == 0:
+        print("Sorry, no matching events found, try different parameters or a different log file.")
+        sys.exit(4)

@@ -80,6 +80,26 @@ def get_user_input(date, room, user, logfile, outfile):
 
     return args.date, args.room, args.user, args.logfile, req_outfile
 
+def read_data(logfile):
+    """read_data: Read logfile and collect lines related to meeting start/end and
+    user join/left events. Return a list of lines matching the events (or even an
+    empty list, if there were no events in the supplied logfile).
+    """
+    # Regex to match relevant log lines including start, end, join and left events
+    pattern = ".*(user_joined_message|user_left_message|meeting_started|meeting_ended).*"
+    line_regex = re.compile(pattern)
+
+    # Read lines from log and put matching ones in raw_attendance list
+    with open(logfile, "r") as log:
+        raw_attendance = []
+        for line in log:
+            if (line_regex.search(line)):
+                raw_attendance.append(line)
+    log.close()
+    # return a list of strings including the matching lines (or an empty list,
+    # if there no start, end, join and left events in the logfile)
+    return raw_attendance
+
 
 ###################################################################
 # MAIN
@@ -90,8 +110,20 @@ if __name__ == '__main__':
     if py_version[0] != 3:
         print("Sorry, this program requires Python 3")
         sys.exit(1)
-    
+
     # Get user input, or use defaults if missing
     req_date, req_room, req_user, logfile, outfile = get_user_input(
                                     def_date, def_room, def_user,
                                     def_logfile, def_output_basename)
+
+    # Read events from logfile. Warn the user if logfile couldn't be found, or
+    # if there were no events to parse and then exit
+    try:
+        raw_attendance = read_data(logfile)
+    except FileNotFoundError:
+        print("Sorry, can't find {} - try a different log file!".format(logfile))
+        sys.exit(2)
+    else:
+        if len(raw_attendance) == 0:
+            print("Sorry, no events found, try a different log file.")
+            sys.exit(3)

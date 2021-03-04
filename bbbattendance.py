@@ -100,6 +100,42 @@ def read_data(logfile):
     # if there no start, end, join and left events in the logfile)
     return raw_attendance
 
+def parse_data(raw_attendance):
+    """parse_data: Parse each item of raw_attendance, and return a list of dicts
+    including: Date, Time, Room, User affected (if applicable) and Event recorded
+    """
+    ## Event data is in a JSON object. Compile a regular expression to extract it
+    pattern = re.compile('data=(.*)')
+    parsed_attendance = []
+    for line in raw_attendance:
+        # extract timestamps
+        try:
+            timestamp = dt.datetime.fromisoformat(line[0:29])
+        except AttributeError:
+            # required for python3 < 3.7 compatibility
+            timestamp = iso8601.parse_date(line[0:29])
+        # We use dates in ISO 8601 format i.e. YYYY-MM-DD
+        evdate = timestamp.strftime('%Y-%m-%d')
+        evtime = timestamp.strftime('%H:%M')
+        # Search and extract json data from line
+        payload = pattern.search(line).group(1)
+        data = json.loads(payload)
+        # get required details for each event
+        evroom = data['name']
+        event = data['description']
+        # get username, of the user joing (or leaving) the meeeting, while
+        # meeting start and end events aren't related to any specific user
+        if data['logCode'] == "user_joined_message" or data['logCode'] == "user_left_message":
+            evuser = data['username']
+        elif data['logCode'] == "meeting_started" or data['logCode'] == "meeting_ended":
+            evuser = ""
+
+        record = {'Date': evdate, 'Time': evtime, "Room": evroom, "User": evuser, "Event": event}
+        parsed_attendance.append(record)
+
+    # return a list of dicts including date, time, room, user (if applicable) and event
+    return parsed_attendance
+
 
 ###################################################################
 # MAIN
@@ -110,6 +146,15 @@ if __name__ == '__main__':
     if py_version[0] != 3:
         print("Sorry, this program requires Python 3")
         sys.exit(1)
+    elif py_version[1] < 7:
+        # Python < 3.7 doesn't provide datetime.datetime.fromisoformat(),
+        # this is why we need the iso8601 module
+        try:
+            import iso8601
+        except:
+            print("With Python < 3.7, this program requires  'iso8601' module.")
+            print("Please install it with `pip3 install iso8601` or `apt install python3-iso8601`")
+            sys.exit(1)
 
     # Get user input, or use defaults if missing
     req_date, req_room, req_user, logfile, outfile = get_user_input(
@@ -127,3 +172,6 @@ if __name__ == '__main__':
         if len(raw_attendance) == 0:
             print("Sorry, no events found, try a different log file.")
             sys.exit(3)
+
+    # Parse lines from log file, and convert them in a list of dicts with the data
+    parsed_attendance = parse_data(raw_attendance)

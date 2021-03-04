@@ -154,6 +154,19 @@ def filter_data(parsed_attendance, req_date='', req_room='', req_user=''):
     # return a list of dicts including date, time, room, user (if applicable) and event
     return filtered_attendance
 
+def save_attendace(filtered_attendance, outfile):
+    """save_attendace: Write filtered_attendance data to a CSV file called outfile.
+    """
+    fieldnames = list(filtered_attendance[0].keys())
+    with open(outfile, 'w') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()
+        for record in filtered_attendance:
+            writer.writerow(record)
+
+    csvfile.close()
+    print("Data written to {}".format(outfile))
 
 
 ###################################################################
@@ -200,3 +213,16 @@ if __name__ == '__main__':
     if len(filtered_attendance) == 0:
         print("Sorry, no matching events found, try different parameters or a different log file.")
         sys.exit(4)
+
+    # try to export processed data to outfile, otherwise exits with an error
+    try:
+        # Save filtered_attendance data to outfile as a CSV file
+        save_attendace(filtered_attendance, outfile)
+        # TODO: wich exception is raised when we can't write to outfile?
+        # can we give more useful directions to users?
+    except Exception as ex:
+        print("Sorry, can't save attendance to {} \n{}".format(outfile, ex))
+        sys.exit(5)
+    else:
+        # Since everything went fine, return success to the shell
+        sys.exit(0)

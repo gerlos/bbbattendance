@@ -85,6 +85,12 @@ def get_user_input(date, room, user, logfile, outfile):
 # MAIN
 ###################################################################
 if __name__ == '__main__':
+    # Check current python version and requirements
+    py_version = sys.version_info
+    if py_version[0] != 3:
+        print("Sorry, this program requires Python 3")
+        sys.exit(1)
+    
     # Get user input, or use defaults if missing
     req_date, req_room, req_user, logfile, outfile = get_user_input(
                                     def_date, def_room, def_user,

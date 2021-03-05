@@ -1,4 +1,4 @@
-# bbb-attendance
+# BBBattendance
 
 This program parses **BigBlueButton** logs for a specific date, looking for meeting start and stop events, and user join and left events. Can filter events based on room name and user name. Can be run on its own or included as a module in other projects.
 
@@ -8,11 +8,17 @@ By default it outputs all events occurred in the current day from default log fi
 
 Results are put in a CSV file that can be then opened in LibreOffice Calc for further processing.
 
-**Columns output:**
+**Output sample:**
 
-| Date | Time | Room | User | Event |
-|---|---|---|---|---|
-|   |   |   |   |   |
+| Date       | Time  | Room      | User          | Event                    |
+|------------|-------|-----------|---------------|--------------------------|
+| 2021-03-05 | 11:25 | Classroom |               | Meeting has started.     |
+| 2021-03-05 | 11:26 | Classroom | Paolo Rossi   | User joined the meeting. |
+| 2021-03-05 | 11:27 | Classroom | Laura Bianchi | User joined the meeting. |
+| 2021-03-05 | 11:27 | Classroom | Marta Verdi   | User joined the meeting. |
+| 2021-03-05 | 12:20 | Classroom | Marta Verdi   | User left the meeting.   |
+| 2021-03-05 | 12:20 | Classroom | Paolo Rossi   | User left the meeting.   |
+| 2021-03-05 | 12:32 | Classroom |               | Meeting has ended.       |
 
 Events may be `meeting start`, `meeting end`, `user join` and `user left`.
 When meetings end before a specific user left, no `user left` event is reported for that user.

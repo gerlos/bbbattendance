@@ -1,6 +1,6 @@
 # BBBattendance
 
-This program parses **BigBlueButton** logs for a specific date, looking for meeting start and stop events, and user join and left events. Can filter events based on room name and user name. Can be run on its own or included as a module in other projects.
+This program parses **BigBlueButton** logs for a specific date, looking for meeting start and stop events, and user join and left events. Can filter events based on room name and user name. It can be run on its own or included as a module in other projects.
 
 It can be used to extract user attendance to meetings, for example for students attending online classes.
 
@@ -35,7 +35,7 @@ Download, fork or copy paste the script to your machine and make it executable.
 ## Usage
 
 ```bash
- $ bbbattendance.py [-h] [-r ROOM] [-u USER] [-l LOGFILE] [-o OUTFILE.CSV] [date]
+ $ ./bbbattendance.py [-h] [-r ROOM] [-u USER] [-l LOGFILE] [-o OUTFILE.CSV] [date]
 ```
 
 All the arguments and options are optional.
@@ -55,19 +55,19 @@ Results are put in a CSV file. If no file name is specified by the user, data is
 Get attendance for room *"Main Room"* on March the 4th, 2020:
 
 ```bash
- $ bbbattendance.py 2020-03-04 -r "Main Room"
+ $ ./bbbattendance.py 2020-03-04 -r "Main Room"
 ```
 
 Get attendance for user John Doe in room *"Main Room"* on March the 4th, 2020:
 
 ```bash
- $ bbbattendance.py -r "Main Room" 2020-03-04 -u "John Doe"
+ $ ./bbbattendance.py -r "Main Room" 2020-03-04 -u "John Doe"
 ```
 
 Get attendance for all the rooms on March the 4th, 2020 from `bbb-web.log`, and write the report to `~/myreport.csv`:
 
 ```bash
- $ bbbattendance.py -l bbb-web.log -o ~/myreport.csv 2020-03-04
+ $ ./bbbattendance.py -l bbb-web.log -o ~/myreport.csv 2020-03-04
 ```
 
 
@@ -75,7 +75,7 @@ Get attendance for all the rooms on March the 4th, 2020 from `bbb-web.log`, and 
 
 **The script depends on Python 3.** On Python < 3.7 it requires also the `iso8601` module.
 
-To install the `iso8601` module, use `pip3 install iso8601` or `apt install python3-iso8601` (on Debian and Ubuntu).
+To install the `iso8601` module, use either `pip3 install iso8601` or `apt install python3-iso8601` (on Debian, Ubuntu and derivatives).
 
 ## Motivation
 

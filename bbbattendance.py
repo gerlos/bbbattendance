@@ -156,11 +156,16 @@ def parse_data(raw_attendance):
     parsed_attendance = []
     for line in raw_attendance:
         # extract timestamps
+        raw_timestamp = line[0:29]
         try:
-            timestamp = dt.datetime.fromisoformat(line[0:29])
+            # datetime.datetime.fromisoformat doesn't expect a Z in time zone
+            # so we replace it with the explicit time zone "+00:00"
+            if raw_timestamp[-1] == "Z":
+                raw_timestamp = raw_timestamp[:-1] + "+00:00"
+            timestamp = dt.datetime.fromisoformat(raw_timestamp)
         except AttributeError:
             # required for python3 < 3.7 compatibility
-            timestamp = iso8601.parse_date(line[0:29])
+            timestamp = iso8601.parse_date(raw_timestamp)
         # We use dates in ISO 8601 format i.e. YYYY-MM-DD
         evdate = timestamp.strftime('%Y-%m-%d')
         evtime = timestamp.strftime('%H:%M')

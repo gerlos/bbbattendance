@@ -2,19 +2,20 @@
 # -*- coding: utf-8 -*-
 """bbbattendance.py [-h] [-r ROOM] [-u USER] [-l LOGFILE] [-o OUTFILE.CSV] [date]
 
-This module parses BigBlueButton logs for a specific date, looking for meeting
-start and stop events and user join and left events. Can filter events based on
-room name and user name. Can be run on its own or included in other projects.
+This module parses BigBlueButton logs looking for meeting start and stop events
+and user join and left events. Can filter events based on date, room name and
+user name. Can be run on its own or included in other projects.
 
 It can be used to extract user attendance to meetings, for example for students
 attending online classes.
 
-By default it outputs all events occurred in the current day from default log
-file, `/var/log/bigbluebutton/bbb-web.log`. Since log files are often rotated,
-you may need to specify a different file to read.
+By default it outputs all events occurred from default log file,
+`/var/log/bigbluebutton/bbb-web.log`. Since log files are often rotated,
+to get data on particular days or meetings you may need to specify a different
+file to read.
 
-Date are formatted in ISO 8601 format (i.e. YYYY-MM-DD, like in 2020-12-31).
-Room and user names with spaces should be in quotes.
+Dates are formatted in ISO 8601 format (i.e. YYYY-MM-DD, like in 2020-12-31).
+Room and user names with spaces should be enclosed in quotes.
 
 Results are put in a CSV file. If no file name is specified by the user, data is
 written to a file beginning with `bbb-report` (for example:
@@ -57,17 +58,21 @@ __license__ = "LGPL"
 __date__ = "2021-03-04"
 __version__ = 1.3
 
+today = dt.date.today().strftime("%Y-%m-%d")
+
 ###################################################################
 # DEFAULT CONFIGURATION
 # This configuration can be overridden by command line arguments
 ###################################################################
 def_logfile = "/var/log/bigbluebutton/bbb-web.log"
 def_output_basename = "bbb-report"
-# Default date is today
-def_date = dt.date.today().strftime("%Y-%m-%d")
-# Empty strings for room and user mean "any room" and "any user"
+# Empty strings for date, room and user mean "any date", "any room" and so on
+def_date = ""
 def_room = ""
 def_user = ""
+# Uncomment to use today as default date
+#def_date = today
+
 
 ###################################################################
 #FUNCTIONS
@@ -94,17 +99,16 @@ def get_user_input(date, room, user, logfile, outfile):
     events for users from BigBlueButton log. Can filter events based on date,
     room name, and user name.
     """
-    epilog="""Without any option outputs all events occurred in the current day
-    from default log file. Since log files are often rotated, you may need to
-    specify which one to use.
-
+    epilog="""Without any option outputs all events occurred from default log
+    file. Since log files are often rotated, you may need to specify which
+    log file to use.
     Results are put in a CSV file, by default beginning with "bbb-report".
     Columns output: Date,Time,Room,User,Event
     """
     parser = argparse.ArgumentParser(
                 description=desc, epilog=epilog)
-    parser.add_argument("date", type=str, nargs='?', default=date,
-                help="date of the events to extract, written like {} (default is today)".format(date))
+    parser.add_argument("-d", "--date", type=str, default=date,
+                help="date of the events to extract, written like {}".format(today))
     parser.add_argument("-r", "--room", type=str, default=room,
                 help="room to search for")
     parser.add_argument("-u", "--user", type=str, default=user,

@@ -10,9 +10,9 @@ Results are put in a CSV file that can be then opened in LibreOffice Calc for fu
 
 **Columns output:**
 
-| Date | Time | Room | User | Event |
-|---|---|---|---|---|
-|   |   |   |   |   |
+| Date       | Time  | Room      | User     | Event                    |
+|------------|-------|-----------|----------|--------------------------|
+| 2021-02-03 | 13:14 | Main Room | Jane Doe | User joined the meeting. |
 
 Events may be `meeting start`, `meeting end`, `user join` and `user left`.
 When meetings end before a specific user left, no `user left` event is reported for that user.

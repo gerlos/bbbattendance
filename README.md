@@ -1,10 +1,6 @@
 # BBBattendance
 
-<<<<<<< HEAD
-This program parses **BigBlueButton** logs for a specific date, looking for meeting start and stop events, and user join and left events. Can filter events based on room name and user name. It can be run on its own or included as a module in other projects.
-=======
 This program parses **BigBlueButton** logs looking for meeting start and stop events, and user join and left events. Can filter events based on date, room name and user name. Can be run on its own or included as a module in other projects.
->>>>>>> development
 
 It can be used to extract user attendance to meetings, for example for students attending online classes.
 
@@ -39,9 +35,6 @@ Download, fork or copy paste the script to your machine and make it executable.
 ## Usage
 
 ```bash
-<<<<<<< HEAD
- $ ./bbbattendance.py [-h] [-r ROOM] [-u USER] [-l LOGFILE] [-o OUTFILE.CSV] [date]
-=======
  $ ./bbbattendance.py --help
 usage: bbbattendance.py [-h] [-d DATE] [-r ROOM] [-u USER] [-l LOGFILE] [-o OUTFILE]
 
@@ -62,7 +55,6 @@ Without any option outputs all events occurred from default log file. Since log
 files are often rotated, you may need to specify which log file to use. Results
 are put in a CSV file, by default beginning with "bbb-report". Columns output:
 Date,Time,Room,User,Event
->>>>>>> development
 ```
 
 All the options are optional.
@@ -82,31 +74,19 @@ Results are put in a CSV file. If no file name is specified by the user, data is
 Get attendance for room *"Main Room"* on March the 4th, 2020:
 
 ```bash
-<<<<<<< HEAD
- $ ./bbbattendance.py 2020-03-04 -r "Main Room"
-=======
  $ bbbattendance.py --date 2020-03-04 --room "Main Room"
->>>>>>> development
 ```
 
 Get attendance for user John Doe in room *"Main Room"* on March the 4th, 2020:
 
 ```bash
-<<<<<<< HEAD
- $ ./bbbattendance.py -r "Main Room" 2020-03-04 -u "John Doe"
-=======
  $ bbbattendance.py -u "John Doe" -r "Main Room" -d 2020-03-04
->>>>>>> development
 ```
 
 Get attendance for all the rooms on March the 4th, 2020 from `bbb-web.log`, and write the report to `~/myreport.csv`:
 
 ```bash
-<<<<<<< HEAD
- $ ./bbbattendance.py -l bbb-web.log -o ~/myreport.csv 2020-03-04
-=======
  $ bbbattendance.py -d 2020-03-04 -l bbb-web.log -o ~/myreport.csv
->>>>>>> development
 ```
 
 

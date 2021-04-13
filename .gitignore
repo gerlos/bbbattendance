@@ -1,2 +1,4 @@
-__pycache__
+__pycache__/
+*.py[cod]
+*$py.class
 bbb-web*.log

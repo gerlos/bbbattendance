@@ -102,7 +102,6 @@ def get_user_input(date, room, user, logfile, outfile):
     epilog="""Without any option outputs all events occurred from default log
     file. Since log files are often rotated, you may need to specify which
     log file to use.
-
     Results are put in a CSV file, by default beginning with "bbb-report".
     Columns output: Date,Time,Room,User,Event
     """

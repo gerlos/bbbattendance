@@ -1,4 +1,4 @@
-# bbb-attendance
+# BBBattendance
 
 This program parses **BigBlueButton** logs looking for meeting start and stop events, and user join and left events. Can filter events based on date, room name and user name. Can be run on its own or included as a module in other projects.
 
@@ -8,7 +8,7 @@ By default it outputs all events found in default log file, `/var/log/bigbluebut
 
 Results are put in a CSV file that can be then opened in LibreOffice Calc for further processing.
 
-**Columns output:**
+**Output sample:**
 
 | Date       | Time  | Room      | User          | Event                    |
 |------------|-------|-----------|---------------|--------------------------|
@@ -61,13 +61,13 @@ All the options are optional.
 
 Dates should be formatted in ISO 8601 format (i.e. `YYYY-MM-DD`, like in 2020-12-31).
 
-Room and user names with spaces should be in quotes. If no date, room or user is specified, events from all the dates, rooms and users found in log file are reported.
+Room and user names with spaces should be in quotes. If no date, room or user is specified, reports events from all the dates, rooms and users found in log file.
 
 By default it reads default log file, `/var/log/bigbluebutton/bbb-web.log`. Since log files are often rotated, you may need to specify a different file to read.
 
 Results are put in a CSV file. If no file name is specified by the user, data is written to a file beginning with `bbb-report` (for example: `bbb-report-2020-12-31-roomname-username.csv`).
 
-*Note: you should check the exact spelling of the user name, since often guests can choose any name they wish, and typos can happen.*
+*Note: you should check the exact spelling of user names you are looking for, since often guests can choose any name they wish, and typos can happen.*
 
 ## Examples
 
@@ -94,7 +94,7 @@ Get attendance for all the rooms on March the 4th, 2020 from `bbb-web.log`, and 
 
 **The script depends on Python 3.** On Python < 3.7 it requires also the `iso8601` module.
 
-To install the `iso8601` module, use `pip3 install iso8601` or `apt install python3-iso8601` (on Debian and Ubuntu).
+To install the `iso8601` module, use either `pip3 install iso8601` or `apt install python3-iso8601` (on Debian, Ubuntu and derivatives).
 
 ## Motivation
 

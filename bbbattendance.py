@@ -57,17 +57,21 @@ __license__ = "LGPL"
 __date__ = "2021-03-04"
 __version__ = 1.3
 
+today = dt.date.today().strftime("%Y-%m-%d")
+
 ###################################################################
 # DEFAULT CONFIGURATION
 # This configuration can be overridden by command line arguments
 ###################################################################
 def_logfile = "/var/log/bigbluebutton/bbb-web.log"
 def_output_basename = "bbb-report"
-# Default date is today
-def_date = dt.date.today().strftime("%Y-%m-%d")
-# Empty strings for room and user mean "any room" and "any user"
+# Empty strings for date, room and user mean "any date", "any room" and so on
+def_date = ""
 def_room = ""
 def_user = ""
+# Uncomment to use today as default date
+#def_date = today
+
 
 ###################################################################
 #FUNCTIONS
@@ -103,8 +107,8 @@ def get_user_input(date, room, user, logfile, outfile):
     """
     parser = argparse.ArgumentParser(
                 description=desc, epilog=epilog)
-    parser.add_argument("date", type=str, nargs='?', default=date,
-                help="date of the events to extract, written like {} (default is today)".format(date))
+    parser.add_argument("-d", "--date", type=str, default=date,
+                help="date of the events to extract, written like {}".format(today))
     parser.add_argument("-r", "--room", type=str, default=room,
                 help="room to search for")
     parser.add_argument("-u", "--user", type=str, default=user,
